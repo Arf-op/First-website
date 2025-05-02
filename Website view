@@ -1,5 +1,116 @@
-<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wave Text test</title>
+  <style>
+    body {
+       background-color: #121212;
+       color: white;
+       font-family: 'Arial', sans-serif;
+       display: flex;
+       justify-content: center;
+       align-items: center;
+       height: 100vh;
+       overflow: hidden;
+     }
+
+    .wave-text {
+       font-size: 3rem;
+       display: flex;
+     }
+
+    .letter {
+       display: inline-block;
+       transform: translatyY(0);
+       animation: wave 1.5s ease-out forwards;
+       opacity: 0;
+       color: white;
+     }
+
+     @keyframes wave {
+       0% {
+         transform: translateY(100px);
+         opacity: 0;
+       }
+       50% {
+         transform: translateY(-30px);
+         opacity: 1;
+       }
+       100% {
+         transform: translateY(0);
+         opacity: 1;
+       }
+     }
+   
+     .fade-out {
+       animation: fadeOut 1.5s ease forwards;
+     }
+
+     @keyframes fadeOut {
+       0% {
+         opacity: 1;
+         transform: translateY(0)
+         color: white;
+       }
+       50% {
+         color: grey;
+         transform: translateY(10px);
+       }
+       90% {
+         color: black;
+       }
+       100% {
+         opacity: 0;
+         transform: translateY(30px);
+         color: black;
+       }
+     }
+  </style>
+</head>
 <body>
-<h1>Hello World</h1>
+  <div class="wave-text" id="waveText"></div>
+  
+  <script>
+    const wvaeText = document.getElementById("waveText");
+    
+    const firstText= "Hello";
+    const secondText = "This.is.a.test";
+
+			function animateText(text, callback) {
+      waveText.innerHTML = "";
+
+	    text.split("").forEach((char, i) {
+				const span = document.createElement("span");
+        span.textContent = char;
+        span.classList.add("letter");
+        span.style.animationDelay = ˋ${i * 0.1}sˋ;
+        waveText.appenChild(span);
+      });
+
+      const totalDuration = text.length * 100 + 1500;
+      setTimeout(() {
+        callback && callback();
+      }, totalDuration);
+    }
+
+    function fadeOutCurrentText(nextText) {
+      Array.from(waveText.children).forEach((span, i) {
+        span.style.animation = "none";
+        span.classList.add("fade-out");
+        span.style.animationDelay = ˋ${i * 0.05}sˋ;
+      });
+
+      const totalFade = waveText.children.length * 50 + 1200;
+      setTimeout(() {
+        animateText(nextText);
+      }, totalFade);
+    }
+
+    animateText(firstText, () {
+      fadeOutCurrentText(secondText);
+    });
+  </script>
 </body>
+</html>
+
 </html>
